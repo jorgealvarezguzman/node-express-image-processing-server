@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const multer = require('multer');
+const path = require('path');
 
 const router = Router();
 const storage = multer.diskStorage({
@@ -10,6 +11,7 @@ const upload = multer({
     fileFilter: fileFilter,
     storage: storage
 });
+const photoPath = path.resolve(__dirname, '../../client/photo-viewer.html');
 
 router.post('/upload', upload.single('photo'), (request, response) => {
     if (request.fileValidationError) {
@@ -23,6 +25,12 @@ router.post('/upload', upload.single('photo'), (request, response) => {
         });
     }
 });
+
+
+router.get('/photo-viewer', (request, response) => {
+    response.sendFile(photoPath);
+});
+
 
 module.exports = router;
 
